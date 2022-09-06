@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- https://stackoverflow.com/questions/49723737/wkhtmltopdf-unicode-issue#comment93042237_49781157 -->
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css" />
+<!--diff2html-css-->
+<!--diff2html-js-ui-->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const targetElement = document.getElementById('diff');
+    const diff2htmlUi = new Diff2HtmlUI(targetElement);
+    //diff2html-fileListToggle
+    //diff2html-synchronisedScroll
+    //diff2html-highlightCode
+  });
+</script>
+<!-- https://github.com/rtfpessoa/diff2html-cli#custom-html-wrapper-template -->
+<!-- https://github.com/rtfpessoa/diff2html/issues/99#issuecomment-1034567628 -->
+<style>
+.d2h-code-line-ctn {
+	white-space: normal;
+}
+.d2h-code-line, .d2h-code-side-line, .d2h-code-line-ctn {
+	width: revert;
+}
+span, div {
+	font-family: "Open Sans", sans-serif;
+}
+</style>
+</head>
+<body>
+	<div id="diff">
+	  <!--diff2html-diff-->
+	</div>
+</body>
+</html>
+

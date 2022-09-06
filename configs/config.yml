@@ -1,0 +1,18 @@
+---
+classoption:
+- twocolumn
+geometry:
+- top=2cm
+- bottom=1.5cm
+- left=2cm
+- right=2cm
+# fontfamily: 'Open Sans Light'
+mainfont: 'Open Sans Light'
+# https://tex.stackexchange.com/questions/568030/pandoc-codeblock-containing-unicode-characters
+monofont: 'Open Sans Light'
+colorlinks:
+urlcolor: 'Blue'
+toccolor: 'Black'
+toc-title: 'Зміст'
+# header-includes:
+# - \usepackage{pdfpages}
