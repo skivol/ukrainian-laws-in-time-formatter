@@ -59,7 +59,7 @@ extra-markup() {
 		| sed 's/\(КОНСТИТУЦІЯ УКРАЇНИ\)/# \1/' \
 		| sed -E '/^(Розділ|Раздел|Частина|Часть)\s/IN;s/(.+)\n(.*)/\n# \1. \2/;P;D' \
 		| sed -E '/^.{1,2}\\\.\s[[:upper:]]{4,}/s/(.+)/\n# \1/' \
-		| sed -E '/^(Глава|Підрозділ)/Is/(.+)/\n## \1/' \
+		| sed -E '/^Глава/IN;s/(.+)\n(.*)/\n## \1. \2/;P;D' \
 		| sed -E 's/^(Стаття|Статья)/\n### \1/' \
 		| sed -E "s/\| \[УКТ   /\| УКТ ЗЕД/g" | sed -E "s/\| 4%D0%B0-18\)/\|            /g" | sed -E "s/\| ЗЕД\]\(\/go\/58/\|            /g" \
 		| sed -E "s/\| ЗЕ? /|    /g" | sed -E "s/\| З /\|   /g" | sed -E "s/\| Е?Д\]\(\/go\/[0-9]{3,4}%D0%B[0-9]-[0-9]{2}\)/\|                      /g" \
@@ -80,7 +80,13 @@ extra-markup() {
 	# Constitution (chapter name on the next line)
 	# | sed -E '/^(Розділ|Раздел|Частина|Часть)\s/IN;s/(.+)\n(.*)/\n# \1. \2/;P;D'
 	#
+	# Administrative codex (chapter on the next line)
+	# | sed -E '/^Глава/IN;s/(.+)\n(.*)/\n## \1. \2/;P;D' \
+	#
+	# Even more complex ? (like over 3 lines?)
 	# | sed -E '/^Глава/IN;N;s/(.+)\n(.*)\n([^\[]+)/## \1. \2\3/;P;D' \
+	#
+	# | sed -E '/^(Глава|Підрозділ)/Is/(.+)/\n## \1/' \
 	#
 	# | sed 's/\\\[ image \\\]/![](.\/gerb.gif "Герб України")/'
 	# | sed 's/\\\[ image \\\]/![](https:\/\/zakonst.rada.gov.ua\/images\/gerb.gif "Герб України")/'
@@ -108,7 +114,9 @@ generate-pdf-for-a-document() {
 	# Merriweather Light
 	# -V toc-title='Зміст' -V mainfont='Open Sans Light' -V geometry:"top=2cm, bottom=1.5cm, left=2cm, right=2cm" -V colorlinks -V urlcolor=Blue -V toccolor=Black
 
-	extra-markup $1 | pandoc --pdf-engine=xelatex --metadata-file=$(zq formatter/configs)/config.yml -B $(zq formatter/tex)/credits.tex -H $(zq formatter/tex)/preamble.tex -f markdown -t pdf --toc "${@:2}" -o $1.pdf -
+	local targetFile=$1
+	local title=$2
+	extra-markup $targetFile | pandoc --pdf-engine=xelatex -V title:"\\textbf{«$title»}\\linebreak зі змінами у часі" --metadata-file=$(zq formatter/configs)/config.yml -H $(zq formatter/tex)/preamble.tex -f markdown -t pdf --toc "${@:3}" -o $targetFile.pdf -
 }
 
 # Longtable in 2 column document
@@ -120,11 +128,12 @@ doc-to-pdf() {
 
 pdf-with-changes() {
 	local targetFile=$1
+	local title=$2
 	z laws-in-time
 	generate-htmls-of-changes-for-a-document $targetFile
 	local appendices=()
-	if [ -n "$2" ]; then
-		appendices=(-A $2)
+	if [ -n "$3" ]; then
+		appendices=(-A $3)
 	fi;
 	local editions=()
 
@@ -134,7 +143,7 @@ pdf-with-changes() {
 		editions=(-A editions.tex)
 	fi
 
-	generate-pdf-for-a-document $targetFile "${appendices[@]}" "${editions[@]}"
+	generate-pdf-for-a-document $targetFile $title "${appendices[@]}" "${editions[@]}"
 	mv $targetFile.pdf $(zq Desktop)
 	rm *.html *.pdf
 }

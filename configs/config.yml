@@ -6,6 +6,11 @@ geometry:
 - bottom=1.5cm
 - left=2cm
 - right=2cm
+subtitle: '\vspace{2\baselineskip}
+        Створено за допомогою \textbf{\href{https://github.com/skivol/ukrainian-laws-in-time-formatter}{skivol/ukrainian-laws-in-time-formatter}},\linebreak
+	з використанням \textbf{\href{https://github.com/skivol/ukrainian-laws-in-time}{skivol/ukrainian-laws-in-time}},\linebreak
+        \textbf{\href{https://github.com/skivol/ukrainian-laws-in-time-generator}{skivol/ukrainian-laws-in-time-generator}}\linebreak
+	та даних з API \textbf{\href{https://data.rada.gov.ua}{data.rada.gov.ua}}.'
 # fontfamily: 'Open Sans Light'
 mainfont: 'Open Sans Light'
 # https://tex.stackexchange.com/questions/568030/pandoc-codeblock-containing-unicode-characters
